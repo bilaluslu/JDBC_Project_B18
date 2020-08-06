@@ -16,9 +16,9 @@ public class DB_Utility {
      * */
     public static void createConnection() {
 
-        String connectionStr = "jdbc:oracle:thin:@52.71.242.164:1521:XE";
-        String username = "hr";
-        String password = "hr";
+        String connectionStr = ConfigurationReader.getProperty("database.url");
+        String username = ConfigurationReader.getProperty("database.username");
+        String password = ConfigurationReader.getProperty("database.password");
 
         try {
             conn = DriverManager.getConnection(connectionStr, username, password);
@@ -27,8 +27,21 @@ public class DB_Utility {
             System.out.println("CONNECTION HAS FAILED!");
             e.printStackTrace();
         }
+    }
+
+    public static void createConnection(String env){
+
+        System.out.println("You are in "+env+" environment");
+        String connectionStr = ConfigurationReader.getProperty(env+".database.url");
+        String username = ConfigurationReader.getProperty(env+".database.username");
+        String password = ConfigurationReader.getProperty(env+".database.password");
+
+        createConnection(connectionStr,username,password);
 
     }
+
+
+
 
     /**
      *  Overload createConnection method to accept url, username, password
@@ -46,8 +59,6 @@ public class DB_Utility {
             }catch(SQLException e){
                 System.out.println("ERROR WHILE CONNECTING WITH PARAMETERS");
             }
-
-
     }
 
 
